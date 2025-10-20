@@ -670,6 +670,60 @@
         .mewmew2 img {
             width: 100%;
         }
+
+        /* glow + stroke pink cho chữ */
+.textLetter h2 {
+  font-size: 30px;
+  font-family: 'Dancing Script', cursive;
+  /* gradient fill */
+  background: linear-gradient(90deg, #ff66b2 0%, #ff8ccf 50%, #ffc0e0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* show gradient */
+  /* pink stroke / viền chữ */
+  -webkit-text-stroke: 1.6px #ff66b2;
+  text-stroke: 1.6px #ff66b2; /* non-standard, but harmless */
+  position: relative;
+  /* subtle base glow so it already looks neon */
+  text-shadow:
+    0 0 6px rgba(255,102,178,0.9),
+    0 0 12px rgba(255,140,200,0.7);
+  /* animation (pulse + stronger glow) */
+  animation: pinkPulse 2s ease-in-out infinite;
+}
+
+/* class bổ sung cho glow mạnh hơn (nếu muốn bật/tắt) */
+.textLetter h2.glowPink {
+  text-shadow:
+    0 0 12px rgba(255,102,178,1),
+    0 0 24px rgba(255,140,200,0.9),
+    0 0 40px rgba(255,180,210,0.7);
+  -webkit-text-stroke: 2px #ff66b2;
+}
+
+/* keyframes cho nhấp nháy / pulse */
+@keyframes pinkPulse {
+  0% {
+    transform: translateY(0);
+    text-shadow:
+      0 0 4px rgba(255,102,178,0.6),
+      0 0 10px rgba(255,140,200,0.5);
+  }
+  50% {
+    transform: translateY(-2px);
+    text-shadow:
+      0 0 14px rgba(255,102,178,1),
+      0 0 30px rgba(255,140,200,0.95),
+      0 0 60px rgba(255,180,210,0.6);
+  }
+  100% {
+    transform: translateY(0);
+    text-shadow:
+      0 0 4px rgba(255,102,178,0.6),
+      0 0 10px rgba(255,140,200,0.5);
+  }
+}
+
     </style>
 </head>
 
@@ -698,8 +752,7 @@
         <text dy="-2">
             <textPath style="font-family: fantasy;" xlink:href="#partialPath" startOffset="12">
                 🌹Happy Women's Day
-                🌹.........................................................................................................................................🌹From
-                With Love 20/10!🌹
+                🌹................................................................................................................................................................................🌹NMH🌹
             </textPath>
         </text>
 
@@ -1109,7 +1162,7 @@
         // .textLetter text h2
         let indexText = 0;
         let textLetter = document.querySelector('.textLetter h2');
-        const textLetterH2 = "Gửi Hoàng Khả Ngân!";
+        const textLetterH2 = "HAPPY WOMEN'S DAY";
         let timoutTextLetter;
 
         function textCharLetter() {
@@ -1125,19 +1178,25 @@
                 }, 500)
             }
         }
-        function funcTimeoutLetter() {
-            indexText = 0; // Reset indexText
-            textLetter.textContent = ''; // Xóa nội dung hiện tại của textLetter
-            clearInterval(timoutTextLetter);
-            timoutTextLetter = setInterval(() => {
-                textCharLetter();
-            }, 200)
-        }
+     // Bật glow mạnh khi bắt đầu gõ chữ
+function funcTimeoutLetter() {
+    indexText = 0;
+    textLetter.textContent = '';
+    clearInterval(timoutTextLetter);
+    timoutTextLetter = setInterval(() => {
+        textCharLetter();
+    }, 200);
+
+    // thêm class glow (an toàn nếu element chưa tồn tại)
+    const h2 = document.querySelector('.textLetter h2');
+    if (h2) h2.classList.add('glowPink');
+}
+
 
         // chữ của thư bạn muốn gửi
         let indexTextContent = 0;
         let textLetterContent = document.querySelector('.contentLetter');
-        const textLetterP = "Hôm nay là ngày 20/10 anh chúc em luôn hạnh phúc và gặp nhiều may mắn trong cuộc sống nhá. Hãy luôn giữ mãi nụ cười trên môi nhá và đừng suy nghĩ nhiều về những thứ không đáng nha";
+        const textLetterP = "Anh, Bee và Moon chúc em luôn xinh đẹp, học giỏi, gặp nhiều niềm vui và may mắn 💐 Iuuu emmmm 💕";
         let timoutTextLetterContent;
         function textCharLetterContent() {
             if (indexTextContent < textLetterP.length) {
