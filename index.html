@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1.0">
     <title>women's day</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap-grid.min.css"
         integrity="sha512-JQksK36WdRekVrvdxNyV3B0Q1huqbTkIQNbz1dlcFVgNynEMRl0F8OSqOGdVppLUDIvsOejhr/W5L3G/b3J+8w=="
@@ -1281,6 +1282,71 @@
         });
 
     </script>
+
+    <script>
+  (function() {
+    // Ngưỡng coi là mobile — thay nếu cần (px)
+    const MOBILE_MAX_WIDTH = 768;
+
+    // Hàm kiểm tra mobile (dùng matchMedia + userAgent để robust)
+    function isMobile() {
+      return window.matchMedia && window.matchMedia('(max-width: ' + MOBILE_MAX_WIDTH + 'px)').matches
+        || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // Nếu là mobile -> đặt initial-scale = 0.33
+    try {
+      const meta = document.getElementById('viewportMeta');
+      if (isMobile() && meta) {
+        // Một số trình duyệt có thể hạn chế very small scale, thử 0.33
+        meta.setAttribute('content', 'width=device-width, initial-scale=0.33, maximum-scale=0.33, user-scalable=0');
+      } else if (meta) {
+        // desktop / tablet mặc định
+        meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+      }
+    } catch (e) {
+      console.warn('Viewport meta update failed', e);
+    }
+
+    // --- Fallback: nếu browser không tôn trọng meta hoặc bạn muốn an toàn,
+    // apply CSS scale trên body chỉ cho mobile ---
+    if (isMobile()) {
+      // Đặt 33% scale như backup
+      const scale = 0.33;
+      // Tạo style ngay để áp dụng sớm
+      const style = document.createElement('style');
+      style.innerHTML = `
+        html, body { height: 100%; width: 100%; }
+        /* wrapper để scale (không scale toàn bộ html trực tiếp tránh khó tương tác) */
+        #zoomWrap { transform-origin: 0 0; transform: scale(${scale}); width: ${100/scale}%; }
+        /* tránh double-scroll */
+        body { overflow-x: hidden; }
+      `;
+      document.head.appendChild(style);
+
+      // Bọc nội dung hiện tại bằng 1 wrapper nếu chưa có
+      // (chúng ta làm điều này sau khi DOM sẵn sàng)
+      function wrapContent() {
+        if (document.getElementById('zoomWrap')) return;
+        const wrapper = document.createElement('div');
+        wrapper.id = 'zoomWrap';
+        // Move all body children into wrapper
+        while (document.body.firstChild) {
+          wrapper.appendChild(document.body.firstChild);
+        }
+        document.body.appendChild(wrapper);
+      }
+
+      // Nếu DOM đã sẵn sàng thì wrap, nếu chưa thì lắng nghe
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wrapContent);
+      } else {
+        wrapContent();
+      }
+    }
+
+  })();
+</script>
 </body>
 
 </html>
