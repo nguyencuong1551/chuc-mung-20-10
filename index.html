@@ -671,19 +671,21 @@
             width: 100%;
         }
 
- .textLetter h2 {
-  font-size: 20px;
-  font-weight: 600;
-  font-family: 'Dancing Script', cursive;
+.textLetter h2 {
+  font-size: 25px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif; /* chữ thẳng, dễ đọc */
   text-align: center;
   background: linear-gradient(90deg, #ff99cc, #ff66b2, #ff99cc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200%;
   animation: glowMove 3s linear infinite;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* hiệu ứng ánh hồng di chuyển như textLetterP */
+/* ánh sáng hồng di chuyển */
 @keyframes glowMove {
   0% {
     background-position: 200% center;
@@ -691,7 +693,7 @@
   }
   50% {
     background-position: 100% center;
-    text-shadow: 0 0 12px rgba(255, 102, 178, 0.8);
+    text-shadow: 0 0 14px rgba(255, 102, 178, 0.9);
   }
   100% {
     background-position: 0% center;
